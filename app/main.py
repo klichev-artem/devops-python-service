@@ -3,6 +3,7 @@ import os
 
 app = FastAPI(title="devops python service")
 
+APP_STAGE = os.getenv("APP_STAGE", "learning-devops")
 APP_ENV = os.getenv("APP_ENV", "local")
 APP_VERSION = os.getenv("APP_VERSION", "0.1.0")
 
@@ -13,7 +14,7 @@ def read_root():
             "environment": APP_ENV
             }
 
-@app.get
+@app.get("/health")
 def health_check():
     return {
             "status": "ok",
@@ -25,4 +26,13 @@ def get_version():
     return {
         "app": "devops-python-service",
         "version": APP_VERSION,
+    }
+
+@app.get("/info")
+def get_info():
+    return {
+            "service": "python service",
+            "lang": "python",
+            "framework": "fastapi",
+            "stage": APP_STAGE,
     }
